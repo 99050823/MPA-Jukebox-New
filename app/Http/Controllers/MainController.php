@@ -17,15 +17,24 @@ class MainController extends Controller
         //GET genres from DB
         $genres = ['Metal', 'Rock', 'Pop'];
 
-        //GET playlists from session
-        $playlists = ['Playlist', 'test', 'Sjaak'];
-
         $activeUser = SessionHelper::getUser();
+
+        //GET playlists from session
+        $check = SessionHelper::checkUserPlaylists($activeUser);
+    
+        if ($check == true) {
+            $playlists = SessionHelper::getUserPlaylists($activeUser);
+            $count = count($playlists);
+        } else {
+            $playlists = "No Playlist created...";
+        }
 
         return view('index', [
             'playlists' => $playlists,
             'genres' => $genres,
             'activeUser' => $activeUser,
+            'check' => $check,
+            'length' => $count
         ]);
     }
 }

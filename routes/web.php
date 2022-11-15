@@ -3,9 +3,14 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MainController;
 use App\Http\Controllers\AccountController;
+use App\Http\Controllers\PlaylistController;
 
 //Main Controller -------------------------------
 Route::get('/', [MainController::class, 'loadIndex']);
+
+//Playlist Controller ---------------------------
+Route::get('/Playlist/CreateView', [PlaylistController::class, 'createPlaylistView']);
+Route::post('/Playlist/Create', [PlaylistController::class, 'createPlaylist']);
 
 //Account Controller ----------------------------
 Route::get('/Account', [AccountController::class, 'accountInfo']);

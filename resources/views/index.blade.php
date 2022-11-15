@@ -24,11 +24,15 @@
         <section>
             <h2>Playlists</h2>
 
-            <ul>
-                @foreach($playlists as $playlist)
-                    <li><a href="#">{{$playlist}}</a></li>
-                @endforeach
-            </ul>
+            @if($check == true)
+                <ul>
+                @for($i = 0; $i < $length; $i++)
+                    <li><a href="#">{{$playlists[$i]}}</a></li>
+                @endfor
+                </ul>
+            @else
+                <p>{{$playlists}}</p>
+            @endif
         </section>
 
         <section>
@@ -40,6 +44,8 @@
                 @endforeach
             </ul>
         </section>
+
+        <a href="/Playlist/CreateView">New Playlist</a>
     </div>
 </body>
 </html>
