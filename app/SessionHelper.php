@@ -8,7 +8,11 @@ class SessionHelper {
 
     public static function storeUser ($user) {
         session()->put("Username", $user->username);
-        session()->put($user->username . " Playlists", []);
+        $check = session()->has($user->username . " Playlists");
+
+        if ($check !== true) {
+            session()->put($user->username . " Playlists", []);
+        }
     }
 
     public static function getUser () {

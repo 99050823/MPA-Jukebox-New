@@ -24,11 +24,18 @@ class MainController extends Controller
     
         if ($check == true) {
             $playlists = SessionHelper::getUserPlaylists($activeUser);
-            $count = count($playlists);
+            if ($playlists !== []) {
+                $count = count($playlists);
+            } else {
+                $playlists = "No Playlist created...";
+                $count = 0;
+                $check = false;
+            }
         } else {
             $playlists = "No Playlist created...";
+            $count = 0;
         }
-
+    
         return view('index', [
             'playlists' => $playlists,
             'genres' => $genres,
