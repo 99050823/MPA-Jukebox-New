@@ -27,7 +27,7 @@
             @if($check == true)
                 <ul>
                 @for($i = 0; $i < $length; $i++)
-                    <li><a href="#">{{$playlists[$i]}}</a></li>
+                    <li><a href="/Playlist/PlaylistView/{{$playlists[$i]}}">{{$playlists[$i]}}</a></li>
                 @endfor
                 </ul>
             @else

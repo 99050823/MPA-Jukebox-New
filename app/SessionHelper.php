@@ -38,4 +38,29 @@ class SessionHelper {
         return session()->has($username . " Playlists");
     }
 
+
+    //Delete playlist by name
+    public static function deletePlaylist($username, $playlistName) {
+        $playlists = session()->get($username . " Playlists");
+        $key = array_search($playlistName, $playlists);
+        
+        unset($playlists[$key]);
+        $newArr = array_values($playlists);
+        
+        session()->forget($username . " Playlists");
+        session()->put($username . " Playlists", $newArr);
+    }
+
+    //Change playlist name 
+    public static function renamePlaylist($username, $playlistName, $newName) {
+        $playlists = session()->get($username . " Playlists");
+        $key = array_search($playlistName, $playlists);
+
+        unset($playlists[$key]);
+        $newArr = array_values($playlists);
+        array_push($newArr, $newName);
+
+        session()->forget($username . " Playlists");
+        session()->put($username . " Playlists", $newArr);
+    }
 } 
