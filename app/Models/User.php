@@ -12,11 +12,9 @@ class User extends Model
     protected $table = 'users'; 
 
     public static function checkUser($username) {
-        $user = DB::table('users')
+        return $user = DB::table('users')
             ->where('username', '=', $username)
             ->first();
-
-        return $user;
     }
 
     public static function insertUser ($username, $password) {

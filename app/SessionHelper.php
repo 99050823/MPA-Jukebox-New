@@ -63,4 +63,24 @@ class SessionHelper {
         session()->forget($username . " Playlists");
         session()->put($username . " Playlists", $newArr);
     }
+
+    public static function checkQueue() {
+        return session()->has("Selected");
+    }
+
+    public static function createQueue() {
+        session()->put("Selected", []);
+    }
+
+    public static function addToQueue($song) {
+        session()->push("Selected", $song);
+    }
+
+    public static function getQueue() {
+        return session()->get("Selected");
+    }
+
+    public static function forgetQueue() {
+        session()->forget("Selected");
+    }
 } 

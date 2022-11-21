@@ -5,9 +5,11 @@ use App\Http\Controllers\MainController;
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\PlaylistController;
 use App\Http\Controllers\ErrorController;
+use App\Http\Controllers\GenreController;
 
 //Main Controller -------------------------------
 Route::get('/', [MainController::class, 'loadIndex']);
+Route::get('/Selected/{id}', [MainController::class, 'generateQueue']);
 
 //Playlist Controller ---------------------------
 Route::get('/Playlist/CreateView', [PlaylistController::class, 'createPlaylistView']);
@@ -16,6 +18,9 @@ Route::get('/Playlist/PlaylistView/{name}', [PlaylistController::class, 'playlis
 Route::get('/Playlist/Delete/{name}', [PlaylistController::class, 'deletePlaylist']);
 Route::get('/Playlist/RenameView/{name}', [PlaylistController::class, 'renamePlaylistView']);
 Route::post('/Playlist/Rename/{name}', [PlaylistController::class, 'renamePlaylist']);
+
+//Genre Controller ------------------------------
+Route::get('/Genre/GenreView/{name}', [GenreController::class, 'genreView']);
 
 //Account Controller ----------------------------
 Route::get('/Account', [AccountController::class, 'accountInfo']);

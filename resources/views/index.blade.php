@@ -40,7 +40,7 @@
 
             <ul>
                 @foreach($genres as $genre)
-                    <li><a href="#">{{$genre}}</a></li>
+                    <li><a href="/Genre/GenreView/{{$genre->genre_name}}">{{$genre->genre_name}}</a></li>
                 @endforeach
             </ul>
         </section>

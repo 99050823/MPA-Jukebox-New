@@ -15,12 +15,15 @@ class MainController extends Controller
     // Load the landing page
     public function loadIndex () {
         //GET genres from DB
-        $genres = ['Metal', 'Rock', 'Pop'];
+        $genres = Genre::getAllGenres();
 
         $activeUser = SessionHelper::getUser();
 
         //GET playlists from session
         $check = SessionHelper::checkUserPlaylists($activeUser);
+
+        //GET the queue from session
+        $queue = SessionHelper::getQueue();
     
         if ($check == true) {
             $playlists = SessionHelper::getUserPlaylists($activeUser);
@@ -41,7 +44,21 @@ class MainController extends Controller
             'genres' => $genres,
             'activeUser' => $activeUser,
             'check' => $check,
-            'length' => $count
+            'length' => $count,
+            'queue' => $queue
         ]);
+    }
+
+    public function generateQueue (Request $req) {
+        SessionHelper::forgetQueue();
+        if(SessionHelper::checkQueue() == false) {
+            SessionHelper::createQueue();
+        }
+
+        $selectedSong = Song::getById($req->id);
+        
+        SessionHelper::addToQueue($selectedSong);
+
+        return redirect("/");
     }
 }
