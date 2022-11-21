@@ -26,9 +26,9 @@
 
             @if($check == true)
                 <ul>
-                @for($i = 0; $i < $length; $i++)
-                    <li><a href="/Playlist/PlaylistView/{{$playlists[$i]}}">{{$playlists[$i]}}</a></li>
-                @endfor
+                    @foreach($playlists as $playlist)
+                        <li><a href="/Playlist/PlaylistView/{{$playlist->playlist_name}}">{{$playlist->playlist_name}}</a></li>
+                    @endforeach
                 </ul>
             @else
                 <p>{{$playlists}}</p>
@@ -43,6 +43,18 @@
                     <li><a href="/Genre/GenreView/{{$genre->genre_name}}">{{$genre->genre_name}}</a></li>
                 @endforeach
             </ul>
+        </section>
+
+        <section>
+            <h2>Queue</h2>
+
+            <ul>
+                @foreach($queue as $selected)
+                    <li>{{$selected->song_name}} - {{$selected->artist}}</li>
+                @endforeach
+            </ul>
+
+            <a href="Playlist/AddSongView">Add songs</a>
         </section>
 
         <a href="/Playlist/CreateView">New Playlist</a>

@@ -18,6 +18,8 @@ Route::get('/Playlist/PlaylistView/{name}', [PlaylistController::class, 'playlis
 Route::get('/Playlist/Delete/{name}', [PlaylistController::class, 'deletePlaylist']);
 Route::get('/Playlist/RenameView/{name}', [PlaylistController::class, 'renamePlaylistView']);
 Route::post('/Playlist/Rename/{name}', [PlaylistController::class, 'renamePlaylist']);
+Route::get('/Playlist/AddSongView', [PlaylistController::class, 'addSongView']);
+Route::get('/Playlist/AddSong/{playlist}', [PlaylistController::class, 'addSong']);
 
 //Genre Controller ------------------------------
 Route::get('/Genre/GenreView/{name}', [GenreController::class, 'genreView']);
@@ -35,3 +37,4 @@ Route::post('/Account/Register/Auth', [AccountController::class, 'register'])->m
 Route::get('/error/password', [ErrorController::class, 'errorPassword']);
 Route::get('/error/username', [ErrorController::class, 'errorUsername']);
 Route::get('/error/noUniqueUsername', [ErrorController::class, 'errorUniqueUsername']);
+

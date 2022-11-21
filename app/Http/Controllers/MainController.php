@@ -17,6 +17,7 @@ class MainController extends Controller
         //GET genres from DB
         $genres = Genre::getAllGenres();
 
+        //GET the logged in user
         $activeUser = SessionHelper::getUser();
 
         //GET playlists from session
@@ -24,7 +25,15 @@ class MainController extends Controller
 
         //GET the queue from session
         $queue = SessionHelper::getQueue();
-    
+        
+        if ($queue == null) {
+            $queueCount = 0;
+        } else {
+            $queueCount = count($queue);
+        }
+        
+        $readableQueue = SessionHelper::createArray($queue, $queueCount);  
+
         if ($check == true) {
             $playlists = SessionHelper::getUserPlaylists($activeUser);
             if ($playlists !== []) {
@@ -45,20 +54,33 @@ class MainController extends Controller
             'activeUser' => $activeUser,
             'check' => $check,
             'length' => $count,
-            'queue' => $queue
+            'queue' => $readableQueue
         ]);
     }
 
     public function generateQueue (Request $req) {
-        SessionHelper::forgetQueue();
-        if(SessionHelper::checkQueue() == false) {
-            SessionHelper::createQueue();
-        }
-
-        $selectedSong = Song::getById($req->id);
         
-        SessionHelper::addToQueue($selectedSong);
+        if (SessionHelper::getUser() == null) {
+            echo "<p>You need to login to create a queue</p>";
+            echo "<a href='/Account/Login'>login</a>";
+        } else {
+            if(SessionHelper::checkQueue() == false) {
+                SessionHelper::createQueue();
+            }
 
-        return redirect("/");
+            $queue = SessionHelper::getQueue();
+            $queueCount = count($queue);
+
+            $readableQueue = SessionHelper::createArray($queue, $queueCount);
+            $selectedSong = Song::getById($req->id);
+
+            if (SessionHelper::checkForDuplicate($readableQueue, $selectedSong) == true) {
+                echo "<p>Song is already added to the queue</p>";
+                echo "<a href='/'>Return Home</a>";
+            } else {
+                SessionHelper::addToQueue($selectedSong);
+                return redirect("/");
+            }
+        }   
     }
 }

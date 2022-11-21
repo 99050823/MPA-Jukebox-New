@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\SessionHelper;
+use App\Models\Song;
 
 class PlaylistController extends Controller
 {
@@ -16,8 +17,12 @@ class PlaylistController extends Controller
         $username = SessionHelper::getUser();
         $playlistName = $req->name;
 
-        SessionHelper::storeUserPlaylist($username, $playlistName);
-        SessionHelper::getUserPlaylists($username);
+        $playlistObj = (object) [
+            'playlist_name' => $playlistName,
+            'attached_songs' => array()
+        ];
+
+        SessionHelper::storeUserPlaylist($username, $playlistObj);
 
         return redirect('/');
     }
@@ -51,5 +56,23 @@ class PlaylistController extends Controller
         $username = SessionHelper::getUser();
         SessionHelper::renamePlaylist($username, $res->name, $res->changeName);
         return redirect("/Playlist/PlaylistView/" . $res->changeName);
+    }
+
+    public function addSongView () {
+        $user = SessionHelper::getUser();
+        $playlists = SessionHelper::getUserPlaylists($user);
+        $queue = SessionHelper::getQueue();
+        
+        $queueCount = count($queue);
+        $newQueue = SessionHelper::createArray($queue, $queueCount);
+
+        return view('addSongs', [
+            'queue' => $newQueue,
+            'playlists' => $playlists
+        ]);
+    }
+
+    public function addSong (Request $req) {
+        dd("test");
     }
 }
