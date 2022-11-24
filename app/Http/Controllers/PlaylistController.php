@@ -30,9 +30,18 @@ class PlaylistController extends Controller
     public function playlistView (Request $req) {
         $username = SessionHelper::getUser();
         $playlistName = $req->name;
-        
+        $songs = SessionHelper::getSpecificPlaylist($username, $playlistName);
+        $check = false;
+
+        if ($songs == null) {
+            $check = true;
+            $songs = "No songs in this playlist...";
+        }
+
         return view('playlist', [
             'playlist' => $playlistName,
+            'songs' => $songs,
+            'check' => $check
         ]);
     }
 
@@ -54,7 +63,9 @@ class PlaylistController extends Controller
 
     public function renamePlaylist (Request $res) {
         $username = SessionHelper::getUser();
-        SessionHelper::renamePlaylist($username, $res->name, $res->changeName);
+        $songs = SessionHelper::getSpecificPlaylist($username, $res->name);
+        SessionHelper::renamePlaylist($username, $res->name, $res->changeName, $songs);
+
         return redirect("/Playlist/PlaylistView/" . $res->changeName);
     }
 
@@ -62,17 +73,43 @@ class PlaylistController extends Controller
         $user = SessionHelper::getUser();
         $playlists = SessionHelper::getUserPlaylists($user);
         $queue = SessionHelper::getQueue();
+        $queueTitle = "";
+        $playlistTitle = "";
         
-        $queueCount = count($queue);
-        $newQueue = SessionHelper::createArray($queue, $queueCount);
+        if ($user == null) {
+            $queue = "No user logged in...";
+            $check = false;
+        } else {
+            if ($queue == []) {
+                $check = false;
+                $queue = "No songs selected...";
+            } else {
+                if ($playlists !== []) {    
+                    $check = true;
+                    $queueTitle = "Queue";
+                    $playlistTitle = "Playlists";
+                } else {
+                    $check = false;
+                    $queue = "No playlist created...";
+                }
+            }
+        }
 
         return view('addSongs', [
-            'queue' => $newQueue,
-            'playlists' => $playlists
+            'queue' => $queue,
+            'playlists' => $playlists,
+            'check' => $check,
+            'queueTitle' => $queueTitle,
+            'playlistTitle' => $playlistTitle
         ]);
     }
 
     public function addSong (Request $req) {
-        dd("test");
+        $username = SessionHelper::getUser();
+
+        SessionHelper::addSong($req->playlist, $username);
+        SessionHelper::forgetQueue();
+
+        return redirect('/Playlist/PlaylistView/' . $req->playlist);
     }
 }

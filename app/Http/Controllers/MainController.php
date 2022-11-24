@@ -31,8 +31,6 @@ class MainController extends Controller
         } else {
             $queueCount = count($queue);
         }
-        
-        $readableQueue = SessionHelper::createArray($queue, $queueCount);  
 
         if ($check == true) {
             $playlists = SessionHelper::getUserPlaylists($activeUser);
@@ -54,7 +52,7 @@ class MainController extends Controller
             'activeUser' => $activeUser,
             'check' => $check,
             'length' => $count,
-            'queue' => $readableQueue
+            'queue' => $queue
         ]);
     }
 
@@ -69,12 +67,9 @@ class MainController extends Controller
             }
 
             $queue = SessionHelper::getQueue();
-            $queueCount = count($queue);
-
-            $readableQueue = SessionHelper::createArray($queue, $queueCount);
             $selectedSong = Song::getById($req->id);
 
-            if (SessionHelper::checkForDuplicate($readableQueue, $selectedSong) == true) {
+            if (SessionHelper::checkForDuplicateQueue($queue, $selectedSong) == true) {
                 echo "<p>Song is already added to the queue</p>";
                 echo "<a href='/'>Return Home</a>";
             } else {

@@ -2,22 +2,30 @@
     <h2>Add songs to a playlist</h2>
 
     <section>
-        <h3>Queue</h3>
+        <h3>{{$queueTitle}}</h3>
 
         <ul>
-            @foreach($queue as $selectedSong)
-                <li>{{$selectedSong->song_name}}</li>
-            @endforeach
+            @if($check == true)
+                @foreach($queue as $selectedSong)
+                    <li>{{$selectedSong->song_name}}</li>
+                @endforeach
+            @else 
+                <p>{{$queue}}</p>
+            @endif
         </ul>
     </section>
 
     <section>
-        <h3>Playlists</h3>
+        <h3>{{$playlistTitle}}</h3>
 
         <ul>
-            @foreach($playlists as $playlist)
-                <li><a href='/Playlist/AddSong/{{$playlist->playlist_name}}'>{{$playlist->playlist_name}}</a></li>
-            @endforeach
+            @if($check == true)
+                @foreach($playlists as $playlist)
+                    <li><a href='/Playlist/AddSong/{{$playlist->playlist_name}}'>{{$playlist->playlist_name}}</a></li>
+                @endforeach
+            @endif
         </ul>
     </section>
+
+    <a href="/">Home</a>
 </div>

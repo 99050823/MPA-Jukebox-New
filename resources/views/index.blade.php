@@ -5,21 +5,20 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Index</title>
-    <link href="{{ url('css/app.css') }}" rel="stylesheet">
-    <style>
-    </style>
+    @vite('resources/css/app.css')
 </head>
 <body>
-    <div>
+    <div class="index-container">
         <header>
             <h1>MPA-JukeBox</h1>
-            <p>Active User: {{$activeUser}}</p>
 
             <ul>
                 <li><a href='/Account'>Account</a></li>
                 <li><a href='#'>Home</a></li>
             </ul>
-        </header>   
+        </header>
+        
+        <p>Active User: {{$activeUser}}</p>
 
         <section>
             <h2>Playlists</h2>
@@ -33,6 +32,9 @@
             @else
                 <p>{{$playlists}}</p>
             @endif
+
+            <button><a href="/Playlist/CreateView">New Playlist</a></button>
+            <button><a href="Playlist/AddSongView">Add songs</a></button>
         </section>
 
         <section>
@@ -53,11 +55,7 @@
                     <li>{{$selected->song_name}} - {{$selected->artist}}</li>
                 @endforeach
             </ul>
-
-            <a href="Playlist/AddSongView">Add songs</a>
         </section>
-
-        <a href="/Playlist/CreateView">New Playlist</a>
     </div>
 </body>
 </html>

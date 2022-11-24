@@ -33,6 +33,19 @@ class SessionHelper {
         return session()->get($username . " Playlists");
     }
 
+    //Get songs from the playlist by name
+    public static function getSpecificPlaylist($username, $playlistName) {
+        $playlists = session()->get($username . " Playlists");
+        $key = array_search($playlistName, $playlists);
+
+        if ($playlists[$key]->attached_songs == []) {
+            return null;
+        } else {
+            return $playlists[$key]->attached_songs;
+        }
+    
+    }
+
     //Check if current user has made any playlists
     public static function checkUserPlaylists($username) {
         return session()->has($username . " Playlists");
@@ -51,16 +64,15 @@ class SessionHelper {
     }
 
     //Change playlist name 
-    public static function renamePlaylist($username, $playlistName, $newName) {
-        $playlists = session()->get($username . " Playlists");
-        $key = array_search($playlistName, $playlists);
+    public static function renamePlaylist($username, $playlistName, $newName, $songs) {
+        SessionHelper::deletePlaylist($username, $playlistName);
+        
+        $newPlaylistObj = (object) [
+            "playlist_name" => $newName,
+            "attached_songs" => $songs
+        ];
 
-        unset($playlists[$key]);
-        $newArr = array_values($playlists);
-        array_push($newArr, $newName);
-
-        session()->forget($username . " Playlists");
-        session()->put($username . " Playlists", $newArr);
+        SessionHelper::storeUserPlaylist($username, $newPlaylistObj);
     }
 
     //Check if a queue exists
@@ -80,7 +92,20 @@ class SessionHelper {
 
     //Get the queue
     public static function getQueue() {
-        return session()->get("Selected");
+        $readableArray = array();
+        $queue = session()->get("Selected");
+
+        if ($queue !== null) {
+            $count = count($queue);
+
+            for ($i=0; $i < $count; $i++) { 
+                array_push($readableArray, $queue[$i][0]);
+            }   
+        } else {
+            $readableArray = [];
+        }
+
+        return $readableArray;
     }
 
     //Delete the queue
@@ -88,28 +113,35 @@ class SessionHelper {
         session()->forget("Selected");
     }
 
-    //Create a clearer array
-    public static function createArray($queue, $count) {
-        $readableArray = array();
-
-        for ($i=0; $i < $count; $i++) { 
-            array_push($readableArray, $queue[$i][0]);
-        }
-
-        return $readableArray;
-    }
-
-    //Check for existing song in the queue or playlist
-    //Location: Playlist or Queue
-    public static function checkForDuplicate($location, $song) {
+    //Check for existing song in the queue 
+    public static function checkForDuplicateQueue($queue, $song) {
         $song = $song[0];
 
-        foreach($location as $existingSong) {
+        foreach($queue as $existingSong) {
             if ($existingSong == $song) {
                 return true;
             } 
         }
 
         return false;
+    }
+
+    public static function addSong($playlistName, $user) {
+        $playlistArr = SessionHelper::getUserPlaylists($user);
+        $queue = SessionHelper::getQueue();
+
+        foreach ($playlistArr as $playlist) {
+            if ($playlist->playlist_name == $playlistName) {
+                foreach($queue as $song) {
+                    if (!in_array($song, $playlist->attached_songs)) {
+                        array_push($playlist->attached_songs, $song);  
+                    } 
+                }
+            } 
+        }
+    }
+
+    public static function deleteWholeSession () {
+        session()->flush();
     }
 } 
