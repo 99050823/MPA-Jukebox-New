@@ -10,52 +10,62 @@
 <body>
     <div class="index-container">
         <header>
-            <h1>MPA-JukeBox</h1>
+            <div class="item1">
+                <h1>MPA-JukeBox</h1>
+            </div>
 
-            <ul>
-                <li><a href='/Account'>Account</a></li>
-                <li><a href='#'>Home</a></li>
-            </ul>
-        </header>
-        
-        <p>Active User: {{$activeUser}}</p>
-
-        <section>
-            <h2>Playlists</h2>
-
-            @if($check == true)
+            <div class="item2">
                 <ul>
-                    @foreach($playlists as $playlist)
-                        <li><a href="/Playlist/PlaylistView/{{$playlist->playlist_name}}">{{$playlist->playlist_name}}</a></li>
+                    <li><a href='/Account'>Account</a></li>
+                    <li><a href='#'>Home</a></li>
+                    <li>Active User: {{$activeUser}}</li>
+                </ul>
+            </div>
+        </header> 
+
+        <div class="main-container">
+            <section>
+                <h2>Playlists</h2>
+
+                @if($check == true)
+                    <ul>
+                        @foreach($playlists as $playlist)
+                            <a href="/Playlist/PlaylistView/{{$playlist->playlist_name}}">
+                                <li>{{$playlist->playlist_name}}</li>
+                            </a>
+                        @endforeach
+                    </ul>
+                @else
+                    <p>{{$playlists}}</p>
+                @endif
+
+                <button><a href="/Playlist/CreateView">New Playlist</a></button>
+                <button><a href="Playlist/AddSongView">Add songs</a></button>
+
+                <section class="queue-container">
+                    <h2>Queue</h2>
+                    <hr>
+
+                    <ul>
+                        @foreach($queue as $selected)
+                            <li>{{$selected->song_name}} - {{$selected->artist}}</li>
+                        @endforeach
+                    </ul>
+                </section>
+            </section>
+
+            <section>
+                <h2>Genres</h2>
+
+                <ul>
+                    @foreach($genres as $genre)
+                        <a href="/Genre/GenreView/{{$genre->genre_name}}">
+                            <li>{{$genre->genre_name}}</li>
+                        </a>
                     @endforeach
                 </ul>
-            @else
-                <p>{{$playlists}}</p>
-            @endif
-
-            <button><a href="/Playlist/CreateView">New Playlist</a></button>
-            <button><a href="Playlist/AddSongView">Add songs</a></button>
-        </section>
-
-        <section>
-            <h2>Genres</h2>
-
-            <ul>
-                @foreach($genres as $genre)
-                    <li><a href="/Genre/GenreView/{{$genre->genre_name}}">{{$genre->genre_name}}</a></li>
-                @endforeach
-            </ul>
-        </section>
-
-        <section>
-            <h2>Queue</h2>
-
-            <ul>
-                @foreach($queue as $selected)
-                    <li>{{$selected->song_name}} - {{$selected->artist}}</li>
-                @endforeach
-            </ul>
-        </section>
+            </section>
+        </div>
     </div>
 </body>
 </html>

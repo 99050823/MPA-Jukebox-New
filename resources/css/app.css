@@ -18,3 +18,86 @@
 .index-container ul li {
     display: inline;
 } */
+
+body {
+    font-family: 'PT Sans', sans-serif;
+    color: white;
+    background-color: rgb(63, 62, 62);
+}
+
+header {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    background-color: rgb(89, 0, 173);
+}
+
+header ul {
+    list-style-type: none;
+}
+
+header ul li {
+    display: inline;
+    margin: 0 90px;
+}
+
+header ul li a {
+    text-decoration: none;
+    color: white;
+}
+
+.item1 {
+    text-align: start;
+    flex-grow: 1;
+}
+
+.item2 {
+    flex-grow: 1;
+    text-align: center;
+}
+
+.item1 h1 {
+    padding-left: 20px;
+}
+
+.main-container {
+    display: flex;
+    justify-content: space-around;
+    text-align: center;
+}
+
+.main-container ul {
+    list-style-type: none;
+}
+
+.main-container ul li {
+    background-color: rgb(89, 0, 173);
+    color: white;
+    text-align: center;
+    margin-right: 35px;
+    margin-bottom: 20px;
+    padding: 10px 70px;
+}
+
+.main-container ul li:hover{
+    background-color: white;
+    color: black;
+}
+
+.main-container ul li a{
+    text-decoration: none;
+}
+
+.queue-container {
+    margin-top: 100px;
+}
+
+button {
+    padding: 10px 20px;
+    text-decoration: none;
+}
+
+button a {
+    text-decoration: none;
+    color: black;
+}
