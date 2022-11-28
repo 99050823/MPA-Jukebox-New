@@ -25,11 +25,13 @@ class MainController extends Controller
 
         //GET the queue from session
         $queue = SessionHelper::getQueue();
+        $queueDuration = 0;
         
         if ($queue == null) {
             $queueCount = 0;
         } else {
             $queueCount = count($queue);
+            $queueDuration = MainController::calculateDuration($queue);
         }
 
         if ($check == true) {
@@ -52,8 +54,26 @@ class MainController extends Controller
             'activeUser' => $activeUser,
             'check' => $check,
             'length' => $count,
-            'queue' => $queue
+            'queue' => $queue,
+            'duration' => $queueDuration
         ]);
+    }
+
+    public function calculateDuration ($queue) {
+        $duration = 0;  
+        $sum = strtotime('00:00:00');
+
+        foreach($queue as $song) {
+            $songTime = $song->duration;
+
+            $timeInSec = strtotime($songTime) - $sum;
+            $duration = $duration + $timeInSec;
+        }
+        
+        $m = intval($duration / 60);
+        $s = $duration - ($m * 60); 
+
+        return "$m:$s";
     }
 
     public function generateQueue (Request $req) {
@@ -77,5 +97,10 @@ class MainController extends Controller
                 return redirect("/");
             }
         }   
+    }
+
+    public function deleteWholeQueue() {
+        SessionHelper::forgetQueue();
+        return redirect("/");
     }
 }

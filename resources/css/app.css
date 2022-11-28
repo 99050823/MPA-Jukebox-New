@@ -19,6 +19,10 @@
     display: inline;
 } */
 
+a {
+    color: white;
+}
+
 body {
     font-family: 'PT Sans', sans-serif;
     color: white;
@@ -70,7 +74,7 @@ header ul li a {
     list-style-type: none;
 }
 
-.main-container ul li {
+.main-container ul li{
     background-color: rgb(89, 0, 173);
     color: white;
     text-align: center;

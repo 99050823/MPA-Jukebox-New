@@ -10,6 +10,7 @@ use App\Http\Controllers\GenreController;
 //Main Controller -------------------------------
 Route::get('/', [MainController::class, 'loadIndex']);
 Route::get('/Selected/{id}', [MainController::class, 'generateQueue']);
+Route::get('/DeleteQueue/All', [MainController::class, 'deleteWholeQueue']);
 
 //Playlist Controller ---------------------------
 Route::get('/Playlist/CreateView', [PlaylistController::class, 'createPlaylistView']);

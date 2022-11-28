@@ -21,7 +21,7 @@
                     <li>Active User: {{$activeUser}}</li>
                 </ul>
             </div>
-        </header> 
+        </header>
 
         <div class="main-container">
             <section>
@@ -44,13 +44,23 @@
 
                 <section class="queue-container">
                     <h2>Queue</h2>
+                    <p>Click on a song in the queue to delete it.</p>
                     <hr>
 
-                    <ul>
-                        @foreach($queue as $selected)
-                            <li>{{$selected->song_name}} - {{$selected->artist}}</li>
-                        @endforeach
-                    </ul>
+                    @if($queue !== [])
+                        <ul>
+                            @foreach($queue as $selected)
+                                <li><a href="/DeleteQueue/Single">{{$selected->song_name}} - {{$selected->artist}}</a></li>
+                            @endforeach    
+                        </ul>
+
+                        <p>Duration: {{$duration}}</p>
+
+                        <a href="/DeleteQueue/All">Delete all</a>
+                    @else 
+                        <p>Empty queue...</p>
+                    @endif
+
                 </section>
             </section>
 
