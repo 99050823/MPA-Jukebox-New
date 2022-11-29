@@ -21,6 +21,7 @@ Route::get('/Playlist/RenameView/{name}', [PlaylistController::class, 'renamePla
 Route::post('/Playlist/Rename/{name}', [PlaylistController::class, 'renamePlaylist']);
 Route::get('/Playlist/AddSongView', [PlaylistController::class, 'addSongView']);
 Route::get('/Playlist/AddSong/{playlist}', [PlaylistController::class, 'addSong']);
+Route::get('/Playlist/DeleteSong/{songName}/{playlistName}', [PlaylistController::class, 'deleteSingleSong']);
 
 //Genre Controller ------------------------------
 Route::get('/Genre/GenreView/{name}', [GenreController::class, 'genreView']);

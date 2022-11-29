@@ -39,11 +39,10 @@ class SessionHelper {
         $key = array_search($playlistName, $playlists);
 
         if ($playlists[$key]->attached_songs == []) {
-            return null;
+            return [];
         } else {
             return $playlists[$key]->attached_songs;
         }
-    
     }
 
     //Check if current user has made any playlists
@@ -140,6 +139,27 @@ class SessionHelper {
             } 
         }
     }
+
+    //Delete a song from a playlist
+    public static function deleteSingleSong ($songName, $playlistName, $user) {
+        $playlistArr = SessionHelper::getSpecificPlaylist($user, $playlistName);
+        
+        foreach($playlistArr as $song) {
+            if ($song->song_name == $songName) {
+                $key = array_search($song, $playlistArr);
+                unset($playlistArr[$key]);
+                
+                $newArr = array_values($playlistArr); 
+                $newPlaylistObj = (object) [
+                    "playlist_name" => $playlistName,
+                    "attached_songs" => $newArr
+                ];
+
+                SessionHelper::deletePlaylist($user, $playlistName);
+                SessionHelper::storeUserPlaylist($user, $newPlaylistObj);
+            }
+        }
+}
 
     public static function deleteWholeSession () {
         session()->flush();

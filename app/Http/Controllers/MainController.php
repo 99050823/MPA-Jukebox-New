@@ -59,7 +59,7 @@ class MainController extends Controller
         ]);
     }
 
-    public function calculateDuration ($queue) {
+    public static function calculateDuration ($queue) {
         $duration = 0;  
         $sum = strtotime('00:00:00');
 

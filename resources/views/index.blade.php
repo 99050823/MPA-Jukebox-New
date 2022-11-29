@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Index</title>
-    @vite('resources/css/app.css')
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body>
     <div class="index-container">
@@ -26,6 +26,7 @@
         <div class="main-container">
             <section>
                 <h2>Playlists</h2>
+                <hr>
 
                 @if($check == true)
                     <ul>
@@ -39,18 +40,19 @@
                     <p>{{$playlists}}</p>
                 @endif
 
-                <button><a href="/Playlist/CreateView">New Playlist</a></button>
-                <button><a href="Playlist/AddSongView">Add songs</a></button>
+                <!-- "/Playlist/CreateView" -->
+                <button id="newButton">New Playlist</button>
+                <!-- /Playlist/AddSongView -->
+                <button id="addButton">Add song</button>
 
                 <section class="queue-container">
                     <h2>Queue</h2>
-                    <p>Click on a song in the queue to delete it.</p>
                     <hr>
 
                     @if($queue !== [])
                         <ul>
                             @foreach($queue as $selected)
-                                <li><a href="/DeleteQueue/Single">{{$selected->song_name}} - {{$selected->artist}}</a></li>
+                                <li>{{$selected->song_name}} - {{$selected->artist}}</li>
                             @endforeach    
                         </ul>
 

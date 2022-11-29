@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\SessionHelper;
 use App\Models\Song;
+use App\Http\Controllers\MainController;
 
 class PlaylistController extends Controller
 {
@@ -31,17 +32,21 @@ class PlaylistController extends Controller
         $username = SessionHelper::getUser();
         $playlistName = $req->name;
         $songs = SessionHelper::getSpecificPlaylist($username, $playlistName);
+        $duration = 0;
         $check = false;
 
         if ($songs == null) {
             $check = true;
             $songs = "No songs in this playlist...";
+        } else {
+            $duration = MainController::calculateDuration($songs);
         }
 
         return view('playlist', [
             'playlist' => $playlistName,
             'songs' => $songs,
-            'check' => $check
+            'check' => $check,
+            'duration' => $duration
         ]);
     }
 
@@ -100,7 +105,7 @@ class PlaylistController extends Controller
             'playlists' => $playlists,
             'check' => $check,
             'queueTitle' => $queueTitle,
-            'playlistTitle' => $playlistTitle
+            'playlistTitle' => $playlistTitle,
         ]);
     }
 
@@ -111,5 +116,14 @@ class PlaylistController extends Controller
         SessionHelper::forgetQueue();
 
         return redirect('/Playlist/PlaylistView/' . $req->playlist);
+    }
+
+    public function deleteSingleSong (Request $req) {
+        $songName = $req->songName;
+        $playlistName = $req->playlistName;
+        $user = SessionHelper::getUser();
+
+        SessionHelper::deleteSingleSong($songName, $playlistName, $user);
+        return redirect("/Playlist/PlaylistView/" . $playlistName);
     }
 }
