@@ -78,25 +78,20 @@ class MainController extends Controller
 
     public function generateQueue (Request $req) {
         
-        if (SessionHelper::getUser() == null) {
-            echo "<p>You need to login to create a queue</p>";
-            echo "<a href='/Account/Login'>login</a>";
+        if(SessionHelper::checkQueue() == false) {
+            SessionHelper::createQueue();
+        }
+
+        $queue = SessionHelper::getQueue();
+        $selectedSong = Song::getById($req->id);
+
+        if (SessionHelper::checkForDuplicateQueue($queue, $selectedSong) == true) {
+            echo "<p>Song is already added to the queue</p>";
+            echo "<a href='/'>Return Home</a>";
         } else {
-            if(SessionHelper::checkQueue() == false) {
-                SessionHelper::createQueue();
-            }
-
-            $queue = SessionHelper::getQueue();
-            $selectedSong = Song::getById($req->id);
-
-            if (SessionHelper::checkForDuplicateQueue($queue, $selectedSong) == true) {
-                echo "<p>Song is already added to the queue</p>";
-                echo "<a href='/'>Return Home</a>";
-            } else {
-                SessionHelper::addToQueue($selectedSong);
-                return redirect("/");
-            }
-        }   
+            SessionHelper::addToQueue($selectedSong);
+            return redirect("/");
+        }
     }
 
     public function deleteWholeQueue() {

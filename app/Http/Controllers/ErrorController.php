@@ -29,4 +29,12 @@ class ErrorController extends Controller
             'linkText' => 'Return to the register page'
         ]);
     }
+
+    public function errorActiveUser() {
+        return view('error', [
+            'errorText' => 'No user logged in',
+            'link' => '/Account/Login',
+            'linkText' => 'Go to the login page'
+        ]);
+    }
 }

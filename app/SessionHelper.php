@@ -159,9 +159,5 @@ class SessionHelper {
                 SessionHelper::storeUserPlaylist($user, $newPlaylistObj);
             }
         }
-}
-
-    public static function deleteWholeSession () {
-        session()->flush();
     }
 } 

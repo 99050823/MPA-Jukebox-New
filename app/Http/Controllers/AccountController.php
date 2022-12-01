@@ -49,6 +49,7 @@ class AccountController extends Controller
 
     public function logout() {
         SessionHelper::logoutUser();
+        SessionHelper::forgetQueue();
         return redirect('Account');
     }
 }

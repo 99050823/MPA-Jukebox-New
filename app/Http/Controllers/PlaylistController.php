@@ -81,22 +81,17 @@ class PlaylistController extends Controller
         $queueTitle = "";
         $playlistTitle = "";
         
-        if ($user == null) {
-            $queue = "No user logged in...";
+        if ($queue == []) {
             $check = false;
+            $queue = "No songs selected...";
         } else {
-            if ($queue == []) {
-                $check = false;
-                $queue = "No songs selected...";
+            if ($playlists !== []) {    
+                $check = true;
+                $queueTitle = "Queue";
+                $playlistTitle = "Playlists";
             } else {
-                if ($playlists !== []) {    
-                    $check = true;
-                    $queueTitle = "Queue";
-                    $playlistTitle = "Playlists";
-                } else {
-                    $check = false;
-                    $queue = "No playlist created...";
-                }
+                $check = false;
+                $queue = "No playlist created...";
             }
         }
 
